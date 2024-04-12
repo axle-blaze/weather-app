@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+
 interface City {
   name: string;
   country: string;
@@ -10,7 +11,7 @@ interface City {
 }
 
 const fetchData = async (offset: number): Promise<City[]> => {
-  const limit = 20; 
+  const limit = 20;
   const response = await fetch(`https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/geonames-all-cities-with-a-population-1000/records?limit=${limit}&offset=${offset}`);
   const data = await response.json();
   return data.results.map((city: any) => ({
@@ -35,7 +36,7 @@ const App: React.FC = () => {
       const distanceToBottom = document.documentElement.offsetHeight - (window.innerHeight + document.documentElement.scrollTop);
       if (distanceToBottom < 1 && !loading) {
         setLoading(true);
-        setOffset(prevOffset => prevOffset + 20); 
+        setOffset(prevOffset => prevOffset + 20);
       }
     };
     window.addEventListener('scroll', handleScroll);
@@ -47,7 +48,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const fetchDataAndUpdateCities = async () => {
       const newCities = await fetchData(offset);
-      setCities(prevCities => [...prevCities, ...newCities]); 
+      setCities(prevCities => [...prevCities, ...newCities]);
       setLoading(false);
     };
     fetchDataAndUpdateCities();
@@ -55,7 +56,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     setFilteredCities(
-      cities.filter(city => 
+      cities.filter(city =>
         (city.name && city.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (city.country && city.country.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (city.timezone && city.timezone.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -93,26 +94,25 @@ const App: React.FC = () => {
   };
 
   return (
-    <div>
-      <Link href="/what">
-                  gfdgdfg
-                </Link>
+    <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px', background: 'linear-gradient(to bottom, orange, white)' }}>
+      <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>City Information</h1>
       <input
         type="text"
         value={searchTerm}
         onChange={handleInputChange}
         placeholder="Search by city, country, or timezone..."
+        style={{ marginBottom: '10px', padding: '5px', width: '100%', boxSizing: 'border-box' }}
       />
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
         <thead>
-          <tr style={{ backgroundColor: '#f2f2f2' }}>
-            <th style={{ padding: '8px', textAlign: 'left' }} onClick={() => handleSort('name')}>
+          <tr style={{ backgroundColor: '#f2f2f2', fontSize: '1.2em' }}>
+            <th style={{ padding: '8px', textAlign: 'left', cursor: 'pointer' }} onClick={() => handleSort('name')}>
               <button style={{ border: 'none', background: 'none', cursor: 'pointer' }}>City Name</button>
             </th>
-            <th style={{ padding: '8px', textAlign: 'left' }} onClick={() => handleSort('country')}>
+            <th style={{ padding: '8px', textAlign: 'left', cursor: 'pointer' }} onClick={() => handleSort('country')}>
               <button style={{ border: 'none', background: 'none', cursor: 'pointer' }}>Country</button>
             </th>
-            <th style={{ padding: '8px', textAlign: 'left' }} onClick={() => handleSort('timezone')}>
+            <th style={{ padding: '8px', textAlign: 'left', cursor: 'pointer' }} onClick={() => handleSort('timezone')}>
               <button style={{ border: 'none', background: 'none', cursor: 'pointer' }}>Timezone</button>
             </th>
             <th style={{ padding: '8px', textAlign: 'left' }}>Latitude</th>
@@ -141,19 +141,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-
-// import Link from 'next/link';
-
-// const HomePage = () => {
-//   return (
-//     <div>
-//       <h1>Welcome to the Home Page</h1>
-//       <Link href="/what">
-//       About Page
-//       </Link>
-//     </div>
-//   );
-// };
-
-// export default HomePage;

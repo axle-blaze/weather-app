@@ -8,18 +8,27 @@ const CityPage = () => {
     ? router.query.cityname[0] // If it's an array, take the first element
     : router.query.cityname;   // If it's not an array, keep it as is
 
-  console.log(cityName);
+  console.log(cityName, "Cityname");
 
   if (!cityName) {
-    return <div>Loading...</div>;
+    return (
+      <div style={{ textAlign: 'center', fontSize: '24px', marginTop: '50vh', transform: 'translateY(-50%)' }}>
+        Loading...
+      </div>
+    );
+  }
+
+  let weatherComponent;
+  try {
+    weatherComponent = <Weather cityName={cityName} />;
+  } catch (error) {
+    console.error("Error rendering Weather component:", error);
+    weatherComponent = <div style={{ textAlign: 'center', fontSize: '24px', marginTop: '50vh', transform: 'translateY(-50%)' }}>Unable to load weather information for {cityName}</div>;
   }
 
   return (
     <div>
-      <div>Weather information for {cityName}</div>
-      <div>
-        <Weather cityName={cityName} />
-      </div>
+      {weatherComponent}
     </div>
   );
 };
